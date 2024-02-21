@@ -11,3 +11,8 @@ export interface ComicData {
     title: string;
     day: string;
 }
+
+export interface ComicDataDto {
+    data: ComicData;
+    count: number;
+}

@@ -6,6 +6,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" Component={ComicPage} />
         <Route path="/:comicNumber?" Component={ComicPage} />
       </Routes>
     </Router>

@@ -7,6 +7,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { ComicData } from './utils/types';
 import ComicCard from './components/ComicCard';
+import { getComic, getLatestComic, getLatestComicNum } from './apis';
 
 const ComicPage: React.FC = () => {
     const { comicNumber } = useParams<{ comicNumber?: string }>();
@@ -14,12 +15,13 @@ const ComicPage: React.FC = () => {
     const [visitCount, setVisitCount] = useState(0);
     const [latestPageNum, setLatestPageNum] = useState<number | null>(null);
 
+    const baseURL = process.env.REACT_APP_PUBLIC_URL;
+
     useEffect(() => {
         const fetchLatestPageNum = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/latest-page-num');
-                const latestData = response.data;
-                setLatestPageNum(latestData);
+                const response = await getLatestComicNum();
+                setLatestPageNum(response);
             } catch (error) {
                 console.error('Error fetching latest comic data:', error);
             }
@@ -32,12 +34,13 @@ const ComicPage: React.FC = () => {
             try {
                 let response;
                 if (comicNumber) {
-                    response = await axios.get(`http://localhost:5000/api/comic/${comicNumber}`);
+                    response = await getComic(comicNumber);
                 } else {
-                    response = await axios.get('http://localhost:5000/api/latest');
+                    response = await getLatestComic();
                 }
-                const data: ComicData = response.data.data;
-                const count = response.data.count;
+                const data: ComicData = response.data;
+                console.log("comic data is", data);
+                const count = response.count;
                 setComicData(data);
                 setVisitCount(count);
             } catch (error) {
