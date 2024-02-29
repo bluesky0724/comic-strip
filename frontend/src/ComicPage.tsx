@@ -79,6 +79,9 @@ const ComicPage: React.FC = () => {
                 </Typography>}
             </Stack>
             <Box display="flex" justifyContent="center" mt={2} mb={6} alignItems="center" gap="20px">
+                <Button style={{ width: '150px' }} disabled={comicData?.num === 1 || comicData === null} component={Link} to={`/`} variant="contained" color="primary" aria-label="delete">
+                    Home
+                </Button>
                 {prevComicNumber !== undefined && (
 
                     <Button style={{ width: '150px' }} disabled={comicData?.num === 1 || comicData === null} component={Link} to={`/${prevComicNumber}`} variant="contained" color="primary" aria-label="delete">
@@ -93,6 +96,9 @@ const ComicPage: React.FC = () => {
                         Next
                     </Button>
                 )}
+                <Button style={{ width: '150px' }} disabled={comicData?.num === 1 || comicData === null} component={Link} to={`/${getRandomPageNumber()}`} variant="contained" color="primary" aria-label="delete">
+                    Random
+                </Button>
             </Box>
         </Container>
     );
