@@ -8,8 +8,8 @@ interface PropType {
 
 export default function ComicCard({ comicData }: PropType) {
     return (
-        <Card sx={{ margin: 'auto', padding: '10px' }}>
-            <Grid container spacing={2} justifyContent="center">
+        <Card sx={{ margin: 'auto', padding: '10px', height: '600px', alignItems: 'center', overflowY: 'auto' }}>
+            <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
                     <CardMedia
                         component="img"
@@ -28,11 +28,16 @@ export default function ComicCard({ comicData }: PropType) {
                             {comicData.day}/{comicData.month}/{comicData.year}
                         </Typography>
                         <Typography variant="body2" component="p" gutterBottom>
-                            {comicData.transcript?.split('\n').map((line, index) => (
-                                <React.Fragment key={index}>
-                                    {line}<br />
-                                </React.Fragment>
-                            ))}
+                            {comicData.transcript?.split('\n').map((line, index) => {
+                                const isExplain = line.includes("[[");
+                                if (isExplain) line = line.replace("[[", "").replace("]]", "");
+                                if (line.includes("{{")) return;
+                                return (
+                                    <Typography fontStyle={isExplain ? "italic" : "normal"} color={isExplain ? "GrayText" : "black"} lineHeight={2} fontSize={isExplain ? "14px" : "16px"} key={index}>
+                                        {line}<br />
+                                    </Typography>
+                                )
+                            })}
                         </Typography>
                     </CardContent>
                 </Grid>

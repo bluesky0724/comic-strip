@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Container, Typography, Button, Box } from '@mui/material';
+import { Container, Typography, Button, Box, Stack } from '@mui/material';
 import axios from 'axios';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -68,36 +68,32 @@ const ComicPage: React.FC = () => {
 
     return (
         <Container maxWidth="md">
-            <Box display="flex" justifyContent="center" mt={2} mb={2} alignItems="center">
+            <Typography variant="subtitle1" fontSize={26} align="center" mt={6}>
+                Visit Count: {visitCount}
+            </Typography>
+            <Stack flexGrow={1} justifyContent="center">
+                {comicData ? (
+                    <ComicCard comicData={comicData} />
+                ) : <Typography variant="h5" component="h2" align="center" mt={2}>
+                    No data for this page
+                </Typography>}
+            </Stack>
+            <Box display="flex" justifyContent="center" mt={2} mb={6} alignItems="center" gap="20px">
                 {prevComicNumber !== undefined && (
 
-                    <Button disabled={comicData?.num === 1 || comicData === null} component={Link} to={`/${prevComicNumber}`} variant="text" color="primary" style={{ marginRight: '10px' }} aria-label="delete" size="large">
-                        <NavigateBeforeIcon />
+                    <Button style={{ width: '150px' }} disabled={comicData?.num === 1 || comicData === null} component={Link} to={`/${prevComicNumber}`} variant="contained" color="primary" aria-label="delete">
+                        Previous
                     </Button>
                 )}
                 <Typography fontSize={22}>
-                    {comicData && `Page ${comicData.num}`}
+                    {comicData && `${comicData.num}`}
                 </Typography>
-                <Box>
-                    <Button component={Link} to={`/${getRandomPageNumber()}`} variant="text" color="primary">
-                        <QuestionMarkIcon />
+                {nextComicNumber !== undefined && (
+                    <Button style={{ width: '150px' }} disabled={(comicData !== null && latestPageNum !== null && (comicData?.num >= latestPageNum)) || comicData === null} component={Link} to={`/${nextComicNumber}`} variant="contained" color="primary">
+                        Next
                     </Button>
-                    {nextComicNumber !== undefined && (
-                        <Button disabled={(comicData !== null && latestPageNum !== null && (comicData?.num >= latestPageNum)) || comicData === null} component={Link} to={`/${nextComicNumber}`} variant="text" color="primary" style={{ marginLeft: '10px' }}>
-                            <NavigateNextIcon />
-                        </Button>
-                    )}
-
-                </Box>
+                )}
             </Box>
-            <Typography variant="subtitle1" align="center" mt={2}>
-                Visit Count: {visitCount}
-            </Typography>
-            {comicData ? (
-                <ComicCard comicData={comicData} />
-            ) : <Typography variant="h5" component="h2" align="center" mt={2}>
-                No data for this page
-            </Typography>}
         </Container>
     );
 };
